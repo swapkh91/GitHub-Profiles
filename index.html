@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="gitApp" ng-controller="gitCtrl">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Git App</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/w3.css">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Github Mini</h1>
+    <div class="mainDiv">
+        <div class="input-group search-bar">
+          <input type="text" ng-model="search" class="form-control" placeholder="Enter github username" ng-keyup="$event.keyCode == 13 && searchProfile()" autofocus required/>
+          <button ng-click = "searchProfile()" type="button" class="btn btn-default">Add</button>
+          <center>
+            <div class="spinner" ng-show="loading">
+            	<img src="img/loader.GIF" alt="loading...">
+            </div>
+          </center>
+        </div>
+    </div>
+    <div class = "profileDiv" ng-if="userNotFound">
+        <h4>No Profile found!</h4>
+    </div>
+
+    <div class = "profileDiv clearfix" ng-if="userCards.length > 0">
+      <div style="margin-bottom: 24px;">
+        <span>Sort By: </span>
+        <span class="cursor-pointer" ng-class="{'sort-condition': sort=='name'}" ng-click="setSortBy('name')">Name</span> | 
+        <span class="cursor-pointer" ng-class="{'sort-condition': sort=='location'}" ng-click="setSortBy('location')">Location</span> | 
+        <span class="cursor-pointer" ng-class="{'sort-condition': sort=='followers'}" ng-click="setSortBy('followers')">Followers</span>
+      </div>
+      <div ng-repeat="userProf in userCards | orderBy: sort" class="w3-container">
+          <div class="w3-card-8 w3-dark-grey">
+            <div class="w3-center" style="padding: 8px;position: relative;">
+            <span class="glyphicon glyphicon-remove remove-user" ng-click="removeUser(userProf)"></span>
+              <img src="{{userProf.avatar_url}}" alt="Avatar" style="width:100%">
+            </div>
+            <div class="w3-left-align" style="padding: 8px;">
+              <h5>{{userProf.name}}</h5>
+              <h5>Location: {{userProf.location}}</h5>
+              <h5>Followers: {{userProf.followers}}</h5>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+    <script src = "js/services.js" type="text/javascript"></script>
+</body>
+</html>
